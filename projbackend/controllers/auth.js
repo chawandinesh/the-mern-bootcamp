@@ -20,7 +20,7 @@ exports.signup = (req, res) => {
     if (err) {
       return res.status(400).json({
         message: err,
-        err: "Not able to save data",
+        error: "Not able to save data",
       });
     }
     res.json({

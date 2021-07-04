@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
 const ProductCartSchema = new mongoose.Schema({
@@ -21,6 +21,11 @@ const OrderSchema = new mongoose.Schema(
       type: Number,
     },
     address: String,
+    status: {
+      type: String,
+      default: "",
+      enum: ["Cancelled", "Delivered", "Processing", "Shipped", "Received"],
+    },
     updated: Date,
     user: {
       type: ObjectId,
