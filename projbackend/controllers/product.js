@@ -3,7 +3,7 @@ const formidable = require("formidable");
 const _ = require("lodash");
 const fs = require("fs");
 
-exports.getProductById = (req, res, next) => {
+exports.getProductById = (req, res, next,id) => {
   Product.findById(id)
     .populate("category")
     .exec((err, product) => {
