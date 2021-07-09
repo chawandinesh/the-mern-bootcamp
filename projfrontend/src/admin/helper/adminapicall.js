@@ -25,9 +25,53 @@ export const getCategories = () => {
     })
     .catch((err) => console.log(err));
 };
+
+//get Catetory by id
+export const getCategoryById = (categoryId) => {
+  return fetch(`${API}/category/${categoryId}`, {
+    method: "GET",
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+//update category by id
+
+export const updateCategoryById = (token, categoryId, userId, categoryName) => {
+  console.log(categoryName, "name");
+  return fetch(`${API}/category/${categoryId}/${userId}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(categoryName)
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+//delete category
+export const deleteCategory = (token, categoryId, userId) => {
+  return fetch(`${API}/category/${categoryId}/${userId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 //product calls
 export const createProduct = (userId, token, product) => {
-  return fetch(`${API}product/create/${userId}`, {
+  return fetch(`${API}/product/create/${userId}`, {
     method: "POST",
     headers: {
       // "Content-Type": "multipart/form-data",
@@ -36,7 +80,7 @@ export const createProduct = (userId, token, product) => {
     body: product,
   })
     .then((response) => {
-      console.log(response,'res....')
+      console.log(response, "res....");
       return response.json();
     })
     .catch((err) => console.log(err));
@@ -80,12 +124,10 @@ export const getProduct = (productId) => {
 };
 //update a product
 export const updateProduct = (productId, userId, token, product) => {
-  console.log(productId,userId,token,product)
+  console.log(productId, userId, token, product);
   return fetch(`${API}/product/${productId}/${userId}`, {
     method: "PUT",
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
     body: product,

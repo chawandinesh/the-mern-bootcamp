@@ -52,6 +52,7 @@ const UpdateProduct = ({ match }) => {
   };
 
   const preload = (productId) => {
+    preloadCategories();
     getProduct(productId).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
@@ -68,11 +69,27 @@ const UpdateProduct = ({ match }) => {
       }
     });
   };
+  console.log(values);
 
-  // console.log(values)
   useEffect(() => {
-    preloadCategories();
-    preload(match.params.productId);
+    Promise.all([getCategories(), getProduct(match.params.productId)])
+      .then((res) => {
+        console.log(res);
+        setValues({
+          ...values,
+          categories: res[0],
+          name: res[1].name,
+          description: res[1].description,
+          price: res[1].price,
+          category: res[1].category._id,
+          stock: res[1].stock,
+          formData: new FormData(),
+        });
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const handleChange = (name) => (event) => {
@@ -81,7 +98,6 @@ const UpdateProduct = ({ match }) => {
     setValues({ ...values, [name]: value });
   };
   //TODO: Work on it
-  console.log(match.params.productId)
   const onSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
@@ -111,7 +127,7 @@ const UpdateProduct = ({ match }) => {
         className="alert alert-success mt-3"
         style={{ display: createdProduct ? "" : "none" }}
       >
-        {/* <h4>{createProduct} created successfully</h4> */}
+        <h4> {createdProduct} Updated successfully</h4>
       </div>
     );
   };
@@ -159,6 +175,7 @@ const UpdateProduct = ({ match }) => {
       <div className="form-group">
         <select
           onChange={handleChange("category")}
+          value={values.category}
           className="form-control"
           placeholder="Category"
         >
