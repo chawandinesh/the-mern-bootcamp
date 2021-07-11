@@ -2,15 +2,18 @@ import React, { useState, useEffect } from "react";
 import Base from "./Base";
 import Card from "./Card";
 import { loadCart } from "./helper/CartHelper";
+import Paymentsb from "./Paymentsb";
+import { StripeCheckout } from "./StripeCheckout";
 
 function Cart() {
   const [products, setProducts] = useState([]);
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
-      console.log('calling..', loadCart())
+    console.log("calling..", loadCart());
     setProducts(loadCart());
   }, [reload]);
+
   const loadAllProducts = () => {
     return (
       <div>
@@ -40,8 +43,24 @@ function Cart() {
   return (
     <Base title="Cart" description="Here your cart">
       <div className="row text-center">
-        <div className="col-6">{loadAllProducts()}</div>
-        <div className="col-6">{loadCheckout()}</div>
+        <div className="col-6">
+          {products && products.length > 0 ? (
+            loadAllProducts()
+          ) : (
+            <h3>No products in cart</h3>
+          )}
+        </div>
+        <div className="col-6">
+          {products && products.length > 0 ? (
+            <Paymentsb
+              products={products}
+              setReload={setReload}
+              reload={reload}
+            />
+          ) : (
+            <h2>Add items to the cart</h2>
+          )}
+        </div>
       </div>
     </Base>
   );

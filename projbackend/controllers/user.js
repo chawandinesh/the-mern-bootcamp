@@ -61,7 +61,7 @@ exports.pushOrderInPurchaseList = (req, res, next) => {
       category: product.category,
       quantity: product.quantity,
       amount: req.body.order.amount,
-      transaction_id: req.body.order.order.transaction_id,
+      transaction_id: req.body.order.transaction_id,
     });
   });
   //store this in db
